@@ -1,14 +1,15 @@
 import Collection from './collection.js';
+import ToDo from './to-do.js';
 
-const c1 = new Collection('default');
-const c2 = new Collection('shopping');
+const t1 = new ToDo('Build Wall');
+const t2 = new ToDo('Go away');
 
-Collection.loadAll();
+//ToDo.loadAll();
 
-let ca = Collection.all;
+let td = ToDo.all;
 
-for (let c of ca) {
-  console.log(c.name);
+for (let t of td) {
+  console.log(t.title);
 //  c.destroy();
 //  break;
 }
