@@ -1,16 +1,16 @@
-import Collection from './collection.js';
-import ToDo from './to-do.js';
+import toDoDiv from './view/to-do.js';
+import collectionDiv from './view/collection.js';
 
-const t1 = new ToDo('Build Wall');
-const t2 = new ToDo('Go away');
+const content = document.querySelector('#content');
 
-//ToDo.loadAll();
+content.appendChild(toDoDiv());
 
-let td = ToDo.all;
+const toDoBtn = document.querySelector('#to-do');
+toDoBtn.addEventListener('click', (e) => {
+  content.replaceChild(toDoDiv(), content.childNodes[0]);
+});
 
-for (let t of td) {
-  console.log(t.title);
-//  c.destroy();
-//  break;
-}
-
+const collectionsBtn = document.querySelector('#collections');
+collectionsBtn.addEventListener('click', (e) => {
+  content.replaceChild(collectionDiv(), content.childNodes[0]);
+});

@@ -1,4 +1,4 @@
-import IO from './dataIO.js';
+import IO from '../dataIO.js';
 
 const dataIO = new IO();
 
