@@ -6,7 +6,6 @@ class ToDo {
 
   constructor(title, description = '', dueDate = null, priority = 3, collection = 'Default',
     notes = '', checklist = []) {
-    this.id = crypto.randomUUID();
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -16,8 +15,12 @@ class ToDo {
     this.checklist = checklist;
     
     this.done = false;
+    this.id = crypto.randomUUID();
 
     ToDo.all.push(this);
+  }
+
+  store() {
     dataIO.storeItem('to-do', this.id, this);
   }
 

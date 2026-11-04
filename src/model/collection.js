@@ -7,7 +7,10 @@ class Collection {
     this.name = name;
 
     Collection.all.push(this);
-    dataIO.storeItem('collection', name, this);
+  }
+
+  store() {
+    dataIO.storeItem('collection', this.name, this);
   }
 
   static all = [];
