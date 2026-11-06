@@ -1,3 +1,5 @@
+import './styles.css';
+
 import toDoDiv from './view/to-do.js';
 import collectionDiv from './view/collection.js';
 

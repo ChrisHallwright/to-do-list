@@ -5,8 +5,8 @@ Collection.loadAll();
 /* const c1 = new Collection('Default');
 c1.store();
 const c2 = new Collection('Shopping');
-c2.store();
- */
+c2.store(); */
+
 function collectionDiv() {
   const div = document.createElement('div');
   div.classList.add('collection');

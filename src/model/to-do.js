@@ -5,7 +5,7 @@ const dataIO = new IO();
 class ToDo {
 
   constructor(title, description = '', dueDate = null, priority = 3, collection = 'Default',
-    notes = '', checklist = []) {
+    notes = '', checklist = [], done = false, id = null) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -13,15 +13,19 @@ class ToDo {
     this.collection = collection;
     this.notes = notes;
     this.checklist = checklist;
-    
-    this.done = false;
-    this.id = crypto.randomUUID();
+    this.done = done;
+    id ? this.id = id : this.id = crypto.randomUUID();
 
     ToDo.all.push(this);
   }
 
   store() {
     dataIO.storeItem('to-do', this.id, this);
+  }
+
+  changeStatus() {
+    this.done = !this.done;
+    this.store();
   }
 
   static all = [];
