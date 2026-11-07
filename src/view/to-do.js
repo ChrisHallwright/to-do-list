@@ -8,16 +8,30 @@ const t2 = new ToDo('Change system');
 t2.store(); 
 const t3 = new ToDo('Bananas', '', null, 3, 'Shopping');
 t3.store();
-const t4 = new ToDo('Chicken', '', '26/07/2027', 3, 'Shopping');
-t4.store(); */
+const t4 = new ToDo('Chicken', '', '2027-07-26', 3, 'Shopping');
+t4.store(); 
+ */
+
+function toDoDiv() {
+  const div = document.createElement('div');
+  div.classList.add('to-do');
+  let td;
+  for (td of ToDo.all) {
+    div.appendChild(td.display());
+  }
+
+  return div;
+}
 
 ToDo.prototype.display = function () {
   let oneTD = document.createElement('div');
+  // Prefix the ids with letters to ensure they are valid
+  oneTD.id = `ID${this.id}`;
 
   let el;
 
   el = document.createElement('input');
-  el.setAttribute('type', 'checkbox');
+  el.setAttribute('type', 'radio');
   el.checked = this.done;
   el.addEventListener('change', (e) => {
     this.done = !this.done;
@@ -44,12 +58,15 @@ ToDo.prototype.display = function () {
   oneTD.appendChild(el);
 
   el = document.createElement('button');
+  el.classList.add('detail-btn');
   el.textContent = '...';
   el.addEventListener('click', (e) => {
     let frm = document.createElement('form');
     frm.classList.add('active');
-    frm = toDoForm(e.target, frm, this);
-    e.target.disabled = true;
+    frm = toDoForm(frm, this);
+    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
+      b.disabled = true;
+    }
     oneTD.appendChild(frm);
   })
   oneTD.appendChild(el);
@@ -57,18 +74,7 @@ ToDo.prototype.display = function () {
   return oneTD;
 };
 
-function toDoDiv() {
-  const div = document.createElement('div');
-  div.classList.add('to-do');
-  let td;
-  for (td of ToDo.all) {
-    div.appendChild(td.display());
-  }
-
-  return div;
-}
-
-function toDoForm(detailBtn, frm, td) {
+function toDoForm(frm, td) {
   // Add form elements
 
   frm.appendChild(formField(td, 'title', 'text'));
@@ -85,19 +91,27 @@ function toDoForm(detailBtn, frm, td) {
   fe.setAttribute('action', '');
   fe.textContent = 'Save';
   fe.addEventListener('click', (e) => {
-    td.title = document.querySelector('input#title').value;
-    td.description = document.querySelector('input#description').value;
-    td.dueDate = document.querySelector('input#dueDate').value;
-    td.priority = document.querySelector('input#priority').value;
-    td.collection = document.querySelector('input#collection').value;
-    td.notes = document.querySelector('input#notes').value;
-    td.checklist = document.querySelector('input#checklist').value;
-    td.done = document.querySelector('input#done').value;
+
+    td.title = document.querySelector(`div#ID${td.id} input[name="title"]`).value;
+    td.description = document.querySelector(`div#ID${td.id} input[name="description"]`).value;
+    td.dueDate = document.querySelector(`div#ID${td.id} input[name="dueDate"]`).value;
+    td.priority = document.querySelector(`div#ID${td.id} input[name="priority"]`).value;
+    td.collection = document.querySelector(`div#ID${td.id} input[name="collection"]`).value;
+    td.notes = document.querySelector(`div#ID${td.id} input[name="notes"]`).value;
+    td.checklist = document.querySelector(`div#ID${td.id} input[name="checklist"]`).value;
+    td.done = document.querySelector(`div#ID${td.id} input[name="done"]`).checked;
+
     td.store();
 
     frm.classList.remove('active');
-    detailBtn.disabled = false;
-    e.preventDefault();
+    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
+      b.disabled = false;
+    }
+    // Sync outer radio button by oneTD div's aligned id
+    document.querySelector(`div#ID${td.id} > input[type="radio"]`).checked = td.done;
+
+    //e.preventDefault();
+
   });
   frm.appendChild(fe);
 
@@ -107,7 +121,9 @@ function toDoForm(detailBtn, frm, td) {
   fe.textContent = 'Cancel';
   fe.addEventListener('click', (e) => {
     frm.classList.remove('active');
-    detailBtn.disabled = false;
+    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
+      b.disabled = false;
+    }
     e.preventDefault();
   });
   frm.appendChild(fe);
@@ -125,10 +141,14 @@ function formField(td, fieldName, fieldType) {
   div.appendChild(lbl);
 
   let fe = document.createElement('input');
-  fe.id = fieldName;
   fe.setAttribute('type', fieldType);
   fe.setAttribute('name', fieldName);
-  fe.setAttribute('value', td[fieldName]);
+  fe.id = fieldName;
+  if (fieldType === 'checkbox') {
+    fe.checked = td[fieldName];
+  } else {
+    fe.setAttribute('value', td[fieldName]);
+  }
   div.appendChild(fe);
 
   return div;
