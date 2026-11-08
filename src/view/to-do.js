@@ -15,6 +15,21 @@ t4.store();
 function toDoDiv() {
   const div = document.createElement('div');
   div.classList.add('to-do');
+
+  const addBtn = document.createElement('button');
+  addBtn.textContent = '+';
+  addBtn.addEventListener('click', (e) => {
+    const newDiv = document.createElement('div');
+    newDiv.id = 'new';
+    const frm = toDoForm();
+    newDiv.appendChild(frm);
+    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
+      b.disabled = true;
+    }
+    div.appendChild(newDiv);
+  })
+  div.appendChild(addBtn);
+
   let td;
   for (td of ToDo.all) {
     div.appendChild(td.display());
@@ -61,9 +76,7 @@ ToDo.prototype.display = function () {
   el.classList.add('detail-btn');
   el.textContent = '...';
   el.addEventListener('click', (e) => {
-    let frm = document.createElement('form');
-    frm.classList.add('active');
-    frm = toDoForm(frm, this);
+    let frm = toDoForm(this);
     for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
       b.disabled = true;
     }
@@ -74,7 +87,17 @@ ToDo.prototype.display = function () {
   return oneTD;
 };
 
-function toDoForm(frm, td) {
+function toDoForm(td = null) {
+  // (A null td object indicates New form is required)
+
+  let newTD = false;
+  if (!td) {
+    newTD = true;
+  }
+
+  let frm = document.createElement('form');
+  frm.classList.add('active');
+
   // Add form elements
 
   frm.appendChild(formField(td, 'title', 'text'));
@@ -92,7 +115,17 @@ function toDoForm(frm, td) {
   fe.textContent = 'Save';
   fe.addEventListener('click', (e) => {
 
-    td.title = document.querySelector(`div#ID${td.id} input[name="title"]`).value;
+    if (newTD) {
+      const enteredTitle = document.querySelector(`div#new input[name="title"]`).value;
+      td = new ToDo(enteredTitle);
+      // Replace parent div id of 'new' with 'ID' + the new object's id,
+      //  as for pre-existing to-do objects.
+      frm.parentElement.id = `ID${td.id}`;
+      //alert(`entered: ${enteredTitle}.  stored: ${td.title}`);
+    } else {
+      td.title = document.querySelector(`div#ID${td.id} input[name="title"]`).value;
+    }
+
     td.description = document.querySelector(`div#ID${td.id} input[name="description"]`).value;
     td.dueDate = document.querySelector(`div#ID${td.id} input[name="dueDate"]`).value;
     td.priority = document.querySelector(`div#ID${td.id} input[name="priority"]`).value;
@@ -109,8 +142,6 @@ function toDoForm(frm, td) {
     }
     // Sync outer radio button by oneTD div's aligned id
     document.querySelector(`div#ID${td.id} > input[type="radio"]`).checked = td.done;
-
-    //e.preventDefault();
 
   });
   frm.appendChild(fe);
@@ -144,10 +175,12 @@ function formField(td, fieldName, fieldType) {
   fe.setAttribute('type', fieldType);
   fe.setAttribute('name', fieldName);
   fe.id = fieldName;
-  if (fieldType === 'checkbox') {
-    fe.checked = td[fieldName];
-  } else {
-    fe.setAttribute('value', td[fieldName]);
+  if (td) {
+    if (fieldType === 'checkbox') {
+      fe.checked = td[fieldName];
+    } else {
+      fe.setAttribute('value', td[fieldName]);
+    }
   }
   div.appendChild(fe);
 
