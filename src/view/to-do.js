@@ -96,6 +96,7 @@ function toDoForm(td = null) {
   }
 
   let frm = document.createElement('form');
+  frm.setAttribute('method', 'post');
   frm.classList.add('active');
 
   // Add form elements
@@ -112,17 +113,19 @@ function toDoForm(td = null) {
   // Save button
   let fe = document.createElement('button');
   fe.setAttribute('type', 'submit');
-  fe.setAttribute('action', '');
+  fe.setAttribute('action', '#');
   fe.textContent = 'Save';
   fe.addEventListener('click', (e) => {
 
+    if (!frm.reportValidity()) {
+      return;
+    }
     if (newTD) {
       const enteredTitle = document.querySelector(`div#new input[name="title"]`).value;
       td = new ToDo(enteredTitle);
       // Replace parent div id of 'new' with 'ID' + the new object's id,
       //  as for pre-existing to-do objects.
       frm.parentElement.id = `ID${td.id}`;
-      //alert(`entered: ${enteredTitle}.  stored: ${td.title}`);
     } else {
       td.title = document.querySelector(`div#ID${td.id} input[name="title"]`).value;
     }
@@ -141,9 +144,10 @@ function toDoForm(td = null) {
     for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
       b.disabled = false;
     }
-    // Sync outer radio button by oneTD div's aligned id
-    document.querySelector(`div#ID${td.id} > input[type="radio"]`).checked = td.done;
-
+    // Sync outer radio button for pre-existing to-dos by oneTD div's aligned id
+    if (!newTD) {
+      document.querySelector(`div#ID${td.id} > input[type="radio"]`).checked = td.done;
+    }
   });
   frm.appendChild(fe);
 
@@ -205,6 +209,33 @@ function formField(td, fieldName, fieldType) {
       fe.setAttribute('value', td[fieldName]);
     }
   }
+
+  // Set validation
+  switch (fieldName) {
+    case 'title':
+    case 'priority':
+    case 'collection':
+      fe.required = true;
+    case 'priority':
+      fe.min = '1';
+      fe.max = '5';
+    case 'done':
+      fe.checked = false;
+  }
+
+  // Set default values
+  if (!td) {
+    switch (fieldName) {
+      case 'collection':
+        fe.value = 'Default';
+        break;
+      case 'priority':
+        fe.value = 3;
+        break;
+    }
+  }
+
+
   div.appendChild(fe);
 
   return div;
