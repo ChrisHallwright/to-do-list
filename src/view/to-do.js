@@ -96,7 +96,6 @@ function toDoForm(td = null) {
   }
 
   let frm = document.createElement('form');
-  frm.setAttribute('method', 'post');
   frm.classList.add('active');
 
   // Add form elements
