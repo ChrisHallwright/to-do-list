@@ -109,6 +109,7 @@ function toDoForm(td = null) {
   frm.appendChild(formField(td, 'checklist', 'text'));
   frm.appendChild(formField(td, 'done', 'checkbox'));
 
+  // Save button
   let fe = document.createElement('button');
   fe.setAttribute('type', 'submit');
   fe.setAttribute('action', '');
@@ -146,6 +147,7 @@ function toDoForm(td = null) {
   });
   frm.appendChild(fe);
 
+  // Cancel button
   fe = document.createElement('button');
   fe.setAttribute('type', 'button');
   fe.setAttribute('action', '');
@@ -158,6 +160,27 @@ function toDoForm(td = null) {
     e.preventDefault();
   });
   frm.appendChild(fe);
+
+  // Delete button
+  if (!newTD) {
+    fe = document.createElement('button');
+    fe.setAttribute('type', 'button');
+    fe.setAttribute('action', '');
+    fe.textContent = 'Delete';
+    fe.addEventListener('click', (e) => {
+
+      td.destroy();
+
+      frm.classList.remove('active');
+      for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
+        b.disabled = false;
+      }
+
+      frm.parentElement.remove();
+      e.preventDefault();
+    });
+    frm.appendChild(fe);
+  }
 
   return frm;
 }
