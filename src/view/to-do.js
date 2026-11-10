@@ -218,8 +218,6 @@ function formField(td, fieldName, fieldType) {
     case 'priority':
       fe.min = '1';
       fe.max = '5';
-    case 'done':
-      fe.checked = false;
   }
 
   // Set default values
@@ -230,6 +228,9 @@ function formField(td, fieldName, fieldType) {
         break;
       case 'priority':
         fe.value = 3;
+        break;
+      case 'done':
+        fe.checked = false;
         break;
     }
   }
