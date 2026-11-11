@@ -1,4 +1,5 @@
 import ToDo from "../model/to-do.js";
+import Collection from "../model/collection.js";
 
 ToDo.loadAll();
 
@@ -104,7 +105,7 @@ function toDoForm(td = null) {
   frm.appendChild(formField(td, 'description', 'textarea'));
   frm.appendChild(formField(td, 'dueDate', 'date'));
   frm.appendChild(formField(td, 'priority', 'number'));
-  frm.appendChild(formField(td, 'collection', 'text'));
+  frm.appendChild(formField(td, 'collection', 'select'));
   frm.appendChild(formField(td, 'notes', 'textarea'));
   frm.appendChild(formField(td, 'checklist', 'text'));
   frm.appendChild(formField(td, 'done', 'checkbox'));
@@ -132,7 +133,7 @@ function toDoForm(td = null) {
     td.description = document.querySelector(`div#ID${td.id} input[name="description"]`).value;
     td.dueDate = document.querySelector(`div#ID${td.id} input[name="dueDate"]`).value;
     td.priority = document.querySelector(`div#ID${td.id} input[name="priority"]`).value;
-    td.collection = document.querySelector(`div#ID${td.id} input[name="collection"]`).value;
+    td.collection = document.querySelector(`div#ID${td.id} select[name="collection"]`).value;
     td.notes = document.querySelector(`div#ID${td.id} input[name="notes"]`).value;
     td.checklist = document.querySelector(`div#ID${td.id} input[name="checklist"]`).value;
     td.done = document.querySelector(`div#ID${td.id} input[name="done"]`).checked;
@@ -197,16 +198,40 @@ function formField(td, fieldName, fieldType) {
   lbl.textContent = `${fieldName[0].toUpperCase()}${fieldName.slice(1)}: `;
   div.appendChild(lbl);
 
-  let fe = document.createElement('input');
-  fe.setAttribute('type', fieldType);
-  fe.setAttribute('name', fieldName);
-  fe.id = fieldName;
-  if (td) {
-    if (fieldType === 'checkbox') {
-      fe.checked = td[fieldName];
-    } else {
-      fe.setAttribute('value', td[fieldName]);
-    }
+  let fe;
+  switch (fieldType) {
+    case 'select':
+      fe = document.createElement('select');
+      fe.setAttribute('name', fieldName);
+      fe.id = fieldName;
+      let opt;
+      for (let coll of Collection.all) {
+        opt = document.createElement('option');
+        opt.textContent = coll.name;
+        if (td) {
+          if (coll.name === td[fieldName]) {
+            opt.selected = true;
+          }
+        } else {
+          if (coll.name === 'Default') {
+            opt.selected = true;
+          }
+        }
+        fe.appendChild(opt);
+      }
+      break;
+    default:  //input field
+      fe = document.createElement('input');
+      fe.setAttribute('type', fieldType);
+      fe.setAttribute('name', fieldName);
+      fe.id = fieldName;
+      if (td) {
+        if (fieldType === 'checkbox') {
+          fe.checked = td[fieldName];
+        } else {
+          fe.setAttribute('value', td[fieldName]);
+        }
+      }
   }
 
   // Set validation
