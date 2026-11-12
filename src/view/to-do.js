@@ -130,11 +130,11 @@ function toDoForm(td = null) {
       td.title = document.querySelector(`div#ID${td.id} input[name="title"]`).value;
     }
 
-    td.description = document.querySelector(`div#ID${td.id} input[name="description"]`).value;
+    td.description = document.querySelector(`div#ID${td.id} textarea[name="description"]`).value;
     td.dueDate = document.querySelector(`div#ID${td.id} input[name="dueDate"]`).value;
     td.priority = document.querySelector(`div#ID${td.id} input[name="priority"]`).value;
     td.collection = document.querySelector(`div#ID${td.id} select[name="collection"]`).value;
-    td.notes = document.querySelector(`div#ID${td.id} input[name="notes"]`).value;
+    td.notes = document.querySelector(`div#ID${td.id} textarea[name="notes"]`).value;
     td.checklist = document.querySelector(`div#ID${td.id} input[name="checklist"]`).value;
     td.done = document.querySelector(`div#ID${td.id} input[name="done"]`).checked;
 
@@ -218,6 +218,14 @@ function formField(td, fieldName, fieldType) {
           }
         }
         fe.appendChild(opt);
+      }
+      break;
+    case 'textarea':
+      fe = document.createElement('textarea');
+      fe.setAttribute('name', fieldName);
+      fe.id = fieldName;
+      if (td) {
+        fe.setAttribute('value', td[fieldName]);
       }
       break;
     default:  //input field
