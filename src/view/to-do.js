@@ -1,5 +1,6 @@
 import ToDo from "../model/to-do.js";
 import Collection from "../model/collection.js";
+import { startOfToday, addDays, differenceInCalendarDays } from "date-fns";
 
 ToDo.loadAll();
 
@@ -31,8 +32,14 @@ function toDoDiv() {
   })
   div.appendChild(addBtn);
 
+  const defaultOrDueTDs = ToDo.all.filter(td => {
+    return td.collection === 'Default' ||
+      td.done === false && td.dueDate != null 
+      && differenceInCalendarDays(addDays(startOfToday(), 2), td.dueDate) > 0;
+  })
+
   let td;
-  for (td of ToDo.all) {
+  for (td of defaultOrDueTDs) {
     div.appendChild(td.display());
   }
 
