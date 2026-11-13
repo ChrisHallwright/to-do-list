@@ -44,7 +44,7 @@ function toDoDiv() {
   addBtn.addEventListener('click', (e) => {
     const newDiv = document.createElement('div');
     newDiv.id = 'new';
-    const frm = toDoForm();
+    const frm = toDoForm(sel.value);
     newDiv.appendChild(frm);
     for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
       b.disabled = true;
@@ -77,7 +77,7 @@ function listToDos(coll) {
   }
   let td;
   for (td of toDoArray) {
-    toDosDiv.appendChild(td.display());
+    toDosDiv.appendChild(td.display(coll));
   }
   
   return toDosDiv;
@@ -121,7 +121,7 @@ ToDo.prototype.display = function () {
   el.classList.add('detail-btn');
   el.textContent = '...';
   el.addEventListener('click', (e) => {
-    let frm = toDoForm(this);
+    let frm = toDoForm('', this);
     for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
       b.disabled = true;
     }
@@ -132,7 +132,7 @@ ToDo.prototype.display = function () {
   return oneTD;
 };
 
-function toDoForm(td = null) {
+function toDoForm(listColl, td = null) {
   // (A null td object indicates New form is required)
 
   let newTD = false;
@@ -149,7 +149,7 @@ function toDoForm(td = null) {
   frm.appendChild(formField(td, 'description', 'textarea'));
   frm.appendChild(formField(td, 'dueDate', 'date'));
   frm.appendChild(formField(td, 'priority', 'number'));
-  frm.appendChild(formField(td, 'collection', 'select'));
+  frm.appendChild(formField(td, 'collection', 'select', listColl));
   frm.appendChild(formField(td, 'notes', 'textarea'));
   frm.appendChild(formField(td, 'checklist', 'text'));
   frm.appendChild(formField(td, 'done', 'checkbox'));
@@ -233,7 +233,7 @@ function toDoForm(td = null) {
   return frm;
 }
 
-function formField(td, fieldName, fieldType) {
+function formField(td, fieldName, fieldType, listColl = '') {
   let div = document.createElement('div');
   div.classList.add('form-field');
 
@@ -256,8 +256,8 @@ function formField(td, fieldName, fieldType) {
           if (coll.name === td[fieldName]) {
             opt.selected = true;
           }
-        } else {
-          if (coll.name === 'Default') {
+        } else { // New to-do
+          if (coll.name === listColl) {
             opt.selected = true;
           }
         }
@@ -300,9 +300,6 @@ function formField(td, fieldName, fieldType) {
   // Set default values
   if (!td) {
     switch (fieldName) {
-      case 'collection':
-        fe.value = 'Default';
-        break;
       case 'priority':
         fe.value = 3;
         break;
