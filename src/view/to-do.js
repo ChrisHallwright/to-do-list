@@ -18,6 +18,27 @@ function toDoDiv() {
   const div = document.createElement('div');
   div.classList.add('to-do');
 
+  // Select collection to display
+  const sel = document.createElement('select');
+  sel.id = 'collection-filter';
+  let opt;
+  for (let coll of Collection.all) {
+    opt = document.createElement('option');
+    opt.textContent = coll.name;
+
+    if (coll.name === 'Default') {
+      opt.selected = true;
+    }
+
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', (e) => {
+    const l = listToDos(e.target.value);
+    div.replaceChild(l, div.childNodes[2]);
+  });
+  div.appendChild(sel);
+
+  // Button to add a new to-do
   const addBtn = document.createElement('button');
   addBtn.textContent = '+';
   addBtn.addEventListener('click', (e) => {
@@ -32,18 +53,34 @@ function toDoDiv() {
   })
   div.appendChild(addBtn);
 
-  const defaultOrDueTDs = ToDo.all.filter(td => {
-    return td.collection === 'Default' ||
-      td.done === false && td.dueDate != null 
-      && differenceInCalendarDays(addDays(startOfToday(), 2), td.dueDate) > 0;
-  })
-
-  let td;
-  for (td of defaultOrDueTDs) {
-    div.appendChild(td.display());
-  }
+  const l = listToDos('Default');
+  div.appendChild(l);
 
   return div;
+}
+
+function listToDos(coll) {
+  const toDosDiv = document.createElement('div');
+  let toDoArray;
+  if (coll === 'Default') {
+    // Default listing should include to-dos due before end of tomorrow from 
+    //   non-Default collections
+    toDoArray = ToDo.all.filter(td => {
+      return td.collection === 'Default' ||
+        td.done === false && td.dueDate != null
+        && differenceInCalendarDays(addDays(startOfToday(), 2), td.dueDate) > 0;
+    })
+  } else {
+    toDoArray = ToDo.all.filter(td => {
+      return td.collection === coll;
+    })
+  }
+  let td;
+  for (td of toDoArray) {
+    toDosDiv.appendChild(td.display());
+  }
+  
+  return toDosDiv;
 }
 
 ToDo.prototype.display = function () {
