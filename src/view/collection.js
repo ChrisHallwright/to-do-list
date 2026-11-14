@@ -39,7 +39,7 @@ function listCollections() {
   for (c of Collection.all) {
     collectionsDiv.appendChild(c.display());
   }
-  
+
   return collectionsDiv;
 }
 
@@ -56,6 +56,7 @@ Collection.prototype.display = function () {
 
   el = document.createElement('button');
   el.classList.add('detail-btn');
+  // Default collection has special meaning - prevent modification
   if (this.name === 'Default') {
     el.disabled = true;
   }
@@ -101,7 +102,7 @@ function collectionForm(coll = null) {
       //  as for pre-existing to-do objects.
       //frm.parentElement.id = `ID${coll.id}`;
     } else {
-//      coll.name = document.querySelector(`div#ID${coll.id} input[name="name"]`).value;
+      //      coll.name = document.querySelector(`div#ID${coll.id} input[name="name"]`).value;
       coll.name = document.querySelector(`div#ID${coll.name} input[name="name"]`).value;
     }
 
@@ -130,11 +131,13 @@ function collectionForm(coll = null) {
     fe.textContent = 'Delete';
     fe.addEventListener('click', (e) => {
 
-      coll.destroy();
+      const rslt = coll.destroy();
 
       frm.classList.remove('active');
 
-      frm.parentElement.remove();
+      if (rslt != 'error') {
+        frm.parentElement.remove();
+      }
       e.preventDefault();
     });
     frm.appendChild(fe);
