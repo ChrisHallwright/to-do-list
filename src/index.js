@@ -8,11 +8,17 @@ const content = document.querySelector('#content');
 content.appendChild(toDoDiv());
 
 const toDoBtn = document.querySelector('#to-do');
+toDoBtn.hidden = true;
+const collectionsBtn = document.querySelector('#collections');
+
 toDoBtn.addEventListener('click', (e) => {
   content.replaceChild(toDoDiv(), content.childNodes[0]);
+  collectionsBtn.hidden = false;
+  toDoBtn.hidden = true;
 });
 
-const collectionsBtn = document.querySelector('#collections');
 collectionsBtn.addEventListener('click', (e) => {
   content.replaceChild(collectionDiv(), content.childNodes[0]);
+  toDoBtn.hidden = false;
+  collectionsBtn.hidden = true;
 });
