@@ -46,9 +46,7 @@ function toDoDiv() {
     newDiv.id = 'new';
     const frm = toDoForm(sel.value);
     newDiv.appendChild(frm);
-    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
-      b.disabled = true;
-    }
+    disableContext(true);
     div.appendChild(newDiv);
   })
   div.appendChild(addBtn);
@@ -57,6 +55,13 @@ function toDoDiv() {
   div.appendChild(l);
 
   return div;
+}
+
+function disableContext(boolSetting) {
+  for (let b of document.querySelectorAll(
+    '.detail-btn, input[type="radio"], div.to-do > select, div.to-do > button')) {
+    b.disabled = boolSetting;
+  }
 }
 
 function listToDos(coll) {
@@ -79,7 +84,7 @@ function listToDos(coll) {
   for (td of toDoArray) {
     toDosDiv.appendChild(td.display(coll));
   }
-  
+
   return toDosDiv;
 }
 
@@ -122,9 +127,7 @@ ToDo.prototype.display = function () {
   el.textContent = '...';
   el.addEventListener('click', (e) => {
     let frm = toDoForm('', this);
-    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
-      b.disabled = true;
-    }
+    disableContext(true);
     oneTD.appendChild(frm);
   })
   oneTD.appendChild(el);
@@ -185,9 +188,7 @@ function toDoForm(listColl, td = null) {
     td.store();
 
     frm.classList.remove('active');
-    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
-      b.disabled = false;
-    }
+    disableContext(false);
     // Sync outer radio button for pre-existing to-dos by oneTD div's aligned id
     if (!newTD) {
       document.querySelector(`div#ID${td.id} > input[type="radio"]`).checked = td.done;
@@ -202,9 +203,8 @@ function toDoForm(listColl, td = null) {
   fe.textContent = 'Cancel';
   fe.addEventListener('click', (e) => {
     frm.classList.remove('active');
-    for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
-      b.disabled = false;
-    }
+    disableContext(false);
+    e.target.parentElement.parentElement.remove();
     e.preventDefault();
   });
   frm.appendChild(fe);
@@ -220,9 +220,7 @@ function toDoForm(listColl, td = null) {
       td.destroy();
 
       frm.classList.remove('active');
-      for (let b of document.querySelectorAll('.detail-btn, input[type="radio"]')) {
-        b.disabled = false;
-      }
+      disableContext(false);
 
       frm.parentElement.remove();
       e.preventDefault();
