@@ -208,7 +208,10 @@ function toDoForm(listColl, td = null) {
   fe.addEventListener('click', (e) => {
     frm.classList.remove('active');
     disableContext(false);
-    e.target.parentElement.parentElement.remove();
+    const newDiv = document.querySelector('div#new');
+    if (newDiv) {
+      newDiv.remove();
+    }
     e.preventDefault();
   });
   frm.appendChild(fe);
