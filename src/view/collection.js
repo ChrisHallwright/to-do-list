@@ -56,6 +56,9 @@ Collection.prototype.display = function () {
 
   el = document.createElement('button');
   el.classList.add('detail-btn');
+  if (this.name === 'Default') {
+    el.disabled = true;
+  }
   el.textContent = '...';
   el.addEventListener('click', (e) => {
     let frm = collectionForm(this);
