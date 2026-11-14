@@ -45,8 +45,7 @@ function listCollections() {
 
 Collection.prototype.display = function () {
   let oneColl = document.createElement('div');
-  // Prefix the ids with letters to ensure they are valid
-  //oneColl.id = `ID${this.id}`;
+  oneColl.id = `ID${this.name}`;
 
   let el;
 
@@ -98,11 +97,7 @@ function collectionForm(coll = null) {
     if (newColl) {
       const enteredName = document.querySelector(`div#new input[name="name"]`).value;
       coll = new Collection(enteredName);
-      // Replace parent div id of 'new' with 'ID' + the new object's id,
-      //  as for pre-existing to-do objects.
-      //frm.parentElement.id = `ID${coll.id}`;
     } else {
-      //      coll.name = document.querySelector(`div#ID${coll.id} input[name="name"]`).value;
       coll.name = document.querySelector(`div#ID${coll.name} input[name="name"]`).value;
     }
 
