@@ -34,7 +34,9 @@ div#content {
 }
 
 div#content div[id] {
-  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid black 1px;
+  margin-bottom: 10px;
 }
 
 div.to-do {

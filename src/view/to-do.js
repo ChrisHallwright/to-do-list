@@ -80,6 +80,10 @@ function listToDos(coll) {
       return td.collection === coll;
     })
   }
+
+  // Sort so that done items appear last
+  toDoArray.sort((a, b) => {return a.done - b.done});
+
   let td;
   for (td of toDoArray) {
     toDosDiv.appendChild(td.display(coll));
