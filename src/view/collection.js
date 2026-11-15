@@ -1,4 +1,5 @@
 import Collection from "../model/collection.js";
+import ToDo from "../model/to-do.js";
 
 Collection.loadAll();
 if (Collection.all.length == 0) {
@@ -131,6 +132,35 @@ function collectionForm(coll = null) {
     fe.setAttribute('action', '');
     fe.textContent = 'Delete';
     fe.addEventListener('click', (e) => {
+      ToDo.loadAll()
+      const toDoArray = ToDo.all.filter(td => {
+        return td.collection === coll.name;
+      })
+      const nToDos = toDoArray.length;
+      if (nToDos > 0) {
+        const stillToDoArray = toDoArray.filter(td => {
+          return td.done === false;
+        })
+        const nStillToDo = stillToDoArray.length;
+        let msg = `For collection "${coll.name}" you have ${nToDos} to-dos`;
+        if (nStillToDo == 0) {
+          msg += ' all of which are done.\nOk to delete them all?'
+        } else {
+          if (nStillToDo == nToDos) {
+            msg += ' none of which have been done.'
+          } else {
+            msg += ` of which ${nStillToDo} are still to do.`
+          }
+          msg += '\nAre you SURE you wish to delete them all?'
+        }
+        if (!window.confirm(msg)) {
+          return;
+        }
+        toDoArray.forEach((td) => {
+          td.destroy();
+        })
+        
+      }
 
       const rslt = coll.destroy();
 

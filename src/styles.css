@@ -161,7 +161,6 @@ form.active button.delete {
 
 div.collection {
   background-color: cyan;
-/*   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 32px 1fr; */
+  display: grid;
+  grid-template-rows: 50px 1fr;
 }
