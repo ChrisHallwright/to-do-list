@@ -26,6 +26,7 @@ button#collections {
 
 button#to-do {
   background-color: honeydew;
+  font-weight: 700;
 }
 
 button#collections,
