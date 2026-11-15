@@ -84,8 +84,12 @@ function collectionForm(coll = null) {
 
   frm.appendChild(formField(coll, 'name', 'text'));
 
+  const btnDiv = document.createElement('div');
+  btnDiv.classList.add('form-buttons');
+
   // Save button
   let fe = document.createElement('button');
+  fe.classList.add('save');
   fe.setAttribute('type', 'submit');
   fe.setAttribute('action', '#');
   fe.textContent = 'Save';
@@ -105,10 +109,11 @@ function collectionForm(coll = null) {
 
     frm.classList.remove('active');
   });
-  frm.appendChild(fe);
+  btnDiv.appendChild(fe);
 
   // Cancel button
   fe = document.createElement('button');
+  fe.classList.add('cancel');
   fe.setAttribute('type', 'button');
   fe.setAttribute('action', '');
   fe.textContent = 'Cancel';
@@ -116,11 +121,12 @@ function collectionForm(coll = null) {
     frm.classList.remove('active');
     e.preventDefault();
   });
-  frm.appendChild(fe);
+  btnDiv.appendChild(fe);
 
   // Delete button
   if (!newColl) {
     fe = document.createElement('button');
+    fe.classList.add('delete');
     fe.setAttribute('type', 'button');
     fe.setAttribute('action', '');
     fe.textContent = 'Delete';
@@ -135,8 +141,10 @@ function collectionForm(coll = null) {
       }
       e.preventDefault();
     });
-    frm.appendChild(fe);
+    btnDiv.appendChild(fe);
   }
+
+  frm.appendChild(btnDiv);
 
   return frm;
 }

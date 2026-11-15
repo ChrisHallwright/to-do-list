@@ -10,52 +10,83 @@ body {
   grid-template-rows: 40px 1fr;
 }
 
-header > nav {
+header>nav {
   display: flex;
   justify-content: right;
   width: 300px;
-  background-color:honeydew;
+  background-color: white;
+  margin-left: 60px;
 }
 
 button#collections {
   background-image: url('./assets/Menu-Icon.png');
   background-size: 20px 20px;
+  background-color: cyan;
 }
+
+button#to-do {
+  background-color: honeydew;
+}
+
 button#collections,
 button#to-do {
   height: 25px;
   width: 25px;
-  background-color: white;
 }
 
 div#content {
   width: 300px;
-  background-color:honeydew;
-}
-
-div#content div[id] {
-  padding-bottom: 20px;
-  border-bottom: solid black 1px;
-  margin-bottom: 10px;
+  margin-left: 60px;
 }
 
 div.to-do {
+  background-color: honeydew;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 30px 1fr;
+  grid-template-rows: 32px 1fr;
 }
 
-div.to-do > button {
+div.to-do>select {
+  margin: 10px 0 0 10px;
+}
+
+div.to-do>button,
+div.collection>button {
   height: 30px;
   width: 30px;
   border-radius: 50%;
   font-size: larger;
   justify-self: right;
+  margin: 10px 10px;
 }
 
-div.to-do > div {
+div.to-do>div {
   grid-column: 1 / 3;
   margin-top: 20px;
+  margin-left: 10px;
+}
+
+div#content div[id] {
+  padding-top: 15px;
+  border-top: solid white 5px;
+  margin-bottom: 15px;
+  display: grid;
+  grid-template-columns: 15px 1fr 30px;
+}
+
+div#content div[id] p {
+  padding-left: 15px;
+}
+
+div#content div[id]>p+p {
+  grid-column: 2 / 3;
+  font-size: small;
+  color: grey;
+}
+
+div#content div[id]>button {
+  grid-column: 3 / 4;
+  margin-right: 10px;
 }
 
 form {
@@ -64,22 +95,73 @@ form {
 
 form.active {
   display: grid;
-  grid-template-rows: repeat(8, 1fr);
   padding: 15px;
 }
 
-form div {
+form.active div.form-field {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 80px 170px;
+  margin-bottom: 10px;
 }
 
-form label {
+form.active label {
   justify-self: right;
   padding-right: 10px;
 }
 
-form input {
+form.active input {
   align-self: self-start;
   justify-self: left;
 }
 
+form.active div.form-buttons {
+  display: grid;
+  grid-template-rows: 60px 60px;
+  grid-template-columns: 1fr 1fr;
+}
+
+form.active button.save,
+form.active button.cancel,
+form.active button.delete {
+  width: 60px;
+  height: 30px;
+  border-radius: 7px;
+}  
+
+form.active button.save {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  justify-self: right;
+  margin-top: 30px;
+  background-color: lightgreen;
+  font-weight: 800;
+  color: green;
+  border-color: green;
+}
+
+form.active button.cancel {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  justify-self: left;
+  margin-top: 30px;
+  background-color: white;
+  color: blue;
+  border-color: blue;
+}
+form.active button.delete {
+  grid-row: 2 / 3;
+  grid-column: 1 / 3;
+  justify-self: left;
+  margin-top: 50px;
+  background-color: red;
+  color: pink;
+  border-color: red;
+}
+
+
+div.collection {
+  background-color: cyan;
+/*   display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 32px 1fr; */
+}

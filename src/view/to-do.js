@@ -161,8 +161,12 @@ function toDoForm(listColl, td = null) {
   frm.appendChild(formField(td, 'checklist', 'text'));
   frm.appendChild(formField(td, 'done', 'checkbox'));
 
+  const btnDiv = document.createElement('div');
+  btnDiv.classList.add('form-buttons');
+
   // Save button
   let fe = document.createElement('button');
+  fe.classList.add('save');
   fe.setAttribute('type', 'submit');
   fe.setAttribute('action', '#');
   fe.textContent = 'Save';
@@ -198,10 +202,11 @@ function toDoForm(listColl, td = null) {
       document.querySelector(`div#ID${td.id} > input[type="radio"]`).checked = td.done;
     }
   });
-  frm.appendChild(fe);
+  btnDiv.appendChild(fe);
 
   // Cancel button
   fe = document.createElement('button');
+  fe.classList.add('cancel');
   fe.setAttribute('type', 'button');
   fe.setAttribute('action', '');
   fe.textContent = 'Cancel';
@@ -214,11 +219,12 @@ function toDoForm(listColl, td = null) {
     }
     e.preventDefault();
   });
-  frm.appendChild(fe);
+  btnDiv.appendChild(fe);
 
   // Delete button
   if (!newTD) {
     fe = document.createElement('button');
+    fe.classList.add('delete');
     fe.setAttribute('type', 'button');
     fe.setAttribute('action', '');
     fe.textContent = 'Delete';
@@ -232,8 +238,10 @@ function toDoForm(listColl, td = null) {
       frm.parentElement.remove();
       e.preventDefault();
     });
-    frm.appendChild(fe);
+    btnDiv.appendChild(fe);
   }
+
+  frm.appendChild(btnDiv);
 
   return frm;
 }
