@@ -1,8 +1,10 @@
 import ToDo from "../model/to-do.js";
 import Collection from "../model/collection.js";
 import { startOfToday, addDays, differenceInCalendarDays } from "date-fns";
+import IO from '../dataIO.js';
 
 ToDo.loadAll();
+const dataIO = new IO();
 
 /* const t1 = new ToDo('Tie knots');
 t1.store();
@@ -26,7 +28,7 @@ function toDoDiv() {
     opt = document.createElement('option');
     opt.textContent = coll.name;
 
-    if (coll.name === 'Default') {
+    if (coll.name === dataIO.retrieveItem('parameter', 'collection-in-use')) {
       opt.selected = true;
     }
 
@@ -34,6 +36,7 @@ function toDoDiv() {
   }
   sel.addEventListener('change', (e) => {
     const l = listToDos(e.target.value);
+    dataIO.storeItem('parameter', 'collection-in-use', e.target.value);
     div.replaceChild(l, div.childNodes[2]);
   });
   div.appendChild(sel);
@@ -51,7 +54,7 @@ function toDoDiv() {
   })
   div.appendChild(addBtn);
 
-  const l = listToDos('Default');
+  const l = listToDos(sel.value);
   div.appendChild(l);
 
   return div;

@@ -33,7 +33,6 @@ class IO {
 
   storeItem(entityName, key, value) {
     this.store.setItem(entityName + '|' + key, JSON.stringify(value));
-
   }
 
   retrieveItem(entityName, key) {

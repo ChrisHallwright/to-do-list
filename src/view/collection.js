@@ -1,10 +1,14 @@
 import Collection from "../model/collection.js";
 import ToDo from "../model/to-do.js";
+import IO from '../dataIO.js';
+
+const dataIO = new IO();
 
 Collection.loadAll();
 if (Collection.all.length == 0) {
   const c1 = new Collection('Default');
   c1.store();
+  dataIO.storeItem('parameter', 'collection-in-use', 'Default');
 }
 
 /*
@@ -107,6 +111,7 @@ function collectionForm(coll = null) {
     }
 
     coll.store();
+    dataIO.storeItem('parameter', 'collection-in-use', coll.name);
 
     frm.classList.remove('active');
   });
@@ -159,7 +164,7 @@ function collectionForm(coll = null) {
         toDoArray.forEach((td) => {
           td.destroy();
         })
-        
+        dataIO.storeItem('parameter', 'collection-in-use', 'Default');        
       }
 
       const rslt = coll.destroy();
