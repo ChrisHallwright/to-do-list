@@ -5,16 +5,6 @@ import { setParameter, getParameter } from '../model/parameter.js';
 
 ToDo.loadAll();
 
-/* const t1 = new ToDo('Tie knots');
-t1.store();
-const t2 = new ToDo('Change system');
-t2.store(); 
-const t3 = new ToDo('Bananas', '', null, 3, 'Shopping');
-t3.store();
-const t4 = new ToDo('Chicken', '', '2027-07-26', 3, 'Shopping');
-t4.store(); 
- */
-
 function toDoDiv() {
   const div = document.createElement('div');
   div.classList.add('to-do');
@@ -160,7 +150,6 @@ function toDoForm(listColl, td = null) {
   frm.appendChild(formField(td, 'priority', 'number'));
   frm.appendChild(formField(td, 'collection', 'select', listColl));
   frm.appendChild(formField(td, 'notes', 'textarea'));
-  frm.appendChild(formField(td, 'checklist', 'text'));
   frm.appendChild(formField(td, 'done', 'checkbox'));
 
   const btnDiv = document.createElement('div');
@@ -192,7 +181,6 @@ function toDoForm(listColl, td = null) {
     td.priority = document.querySelector(`div#ID${td.id} input[name="priority"]`).value;
     td.collection = document.querySelector(`div#ID${td.id} select[name="collection"]`).value;
     td.notes = document.querySelector(`div#ID${td.id} textarea[name="notes"]`).value;
-    td.checklist = document.querySelector(`div#ID${td.id} input[name="checklist"]`).value;
     td.done = document.querySelector(`div#ID${td.id} input[name="done"]`).checked;
 
     td.store();

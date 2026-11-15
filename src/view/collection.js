@@ -10,10 +10,6 @@ if (Collection.all.length == 0) {
   setParameter('collection-in-use', 'Default');
 }
 
-/*
-const c2 = new Collection('Shopping');
-c2.store(); */
-
 function collectionDiv() {
   const div = document.createElement('div');
   div.classList.add('collection');
