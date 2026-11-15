@@ -1,10 +1,9 @@
 import ToDo from "../model/to-do.js";
 import Collection from "../model/collection.js";
 import { startOfToday, addDays, differenceInCalendarDays } from "date-fns";
-import IO from '../dataIO.js';
+import { setParameter, getParameter } from '../model/parameter.js';
 
 ToDo.loadAll();
-const dataIO = new IO();
 
 /* const t1 = new ToDo('Tie knots');
 t1.store();
@@ -28,7 +27,7 @@ function toDoDiv() {
     opt = document.createElement('option');
     opt.textContent = coll.name;
 
-    if (coll.name === dataIO.retrieveItem('parameter', 'collection-in-use')) {
+    if (coll.name === getParameter('collection-in-use')) {
       opt.selected = true;
     }
 
@@ -36,7 +35,7 @@ function toDoDiv() {
   }
   sel.addEventListener('change', (e) => {
     const l = listToDos(e.target.value);
-    dataIO.storeItem('parameter', 'collection-in-use', e.target.value);
+    setParameter('collection-in-use', e.target.value);
     div.replaceChild(l, div.childNodes[2]);
   });
   div.appendChild(sel);
@@ -85,7 +84,7 @@ function listToDos(coll) {
   }
 
   // Sort so that done items appear last
-  toDoArray.sort((a, b) => {return a.done - b.done});
+  toDoArray.sort((a, b) => { return a.done - b.done });
 
   let td;
   for (td of toDoArray) {
