@@ -272,7 +272,7 @@ function formField(td, fieldName, fieldType, listColl = '') {
       fe.setAttribute('name', fieldName);
       fe.id = fieldName;
       if (td) {
-        fe.setAttribute('value', td[fieldName]);
+        fe.value = td[fieldName];
       }
       break;
     default:  //input field
@@ -284,7 +284,7 @@ function formField(td, fieldName, fieldType, listColl = '') {
         if (fieldType === 'checkbox') {
           fe.checked = td[fieldName];
         } else {
-          fe.setAttribute('value', td[fieldName]);
+          fe.value = td[fieldName];
         }
       }
   }
